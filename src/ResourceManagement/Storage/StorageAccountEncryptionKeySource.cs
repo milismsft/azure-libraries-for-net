@@ -15,5 +15,10 @@ namespace Microsoft.Azure.Management.Storage.Fluent
         /// Static value Microsoft.Storage for StorageAccountEncryptionKeySource.
         /// </summary>
         public static readonly StorageAccountEncryptionKeySource Microsoft_Storage = Parse("Microsoft.Storage");
+
+        /// <summary>
+        /// Static value Microsoft.Keyvault for StorageAccountEncryptionKeySource.
+        /// </summary>
+        public static readonly StorageAccountEncryptionKeySource Microsoft_Keyvault = Parse("Microsoft.Keyvault");
     }
 }

@@ -10,11 +10,6 @@ namespace Microsoft.Azure.Management.Storage.Fluent
     public interface IStorageAccountEncryptionStatus 
     {
         /// <summary>
-        /// Gets the storage service type.
-        /// </summary>
-        Microsoft.Azure.Management.Storage.Fluent.StorageService StorageService { get; }
-
-        /// <summary>
         /// Gets rough estimate of the date/time when the encryption was last enabled, null if
         /// the encryption is disabled.
         /// </summary>

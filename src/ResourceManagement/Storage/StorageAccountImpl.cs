@@ -90,37 +90,22 @@ namespace Microsoft.Azure.Management.Storage.Fluent
             return new PublicEndpoints(Inner.PrimaryEndpoints, Inner.SecondaryEndpoints);
         }
 
-        ///GENMHASH:C7B3D3963622074C2FD00EB9A2E0FE72:84CE69ECBC3078017A0DFFC90EF4E3D9
+        ///GENMHASH:C7B3D3963622074C2FD00EB9A2E0FE72:11DD8AD22561ECD1652BDB11C9699DD1
         public Encryption Encryption()
         {
             return Inner.Encryption;
         }
 
-        ///GENMHASH:E3CB6E557BDC02538C5A6963772F3FEF:349706F064F75B85DB63EF492656563E
+        ///GENMHASH:E3CB6E557BDC02538C5A6963772F3FEF:15D05D69CDC082DB89A322578DD08FE1
         public StorageAccountEncryptionKeySource EncryptionKeySource()
         {
-            if (this.Inner.Encryption == null || Microsoft.Azure.Management.Storage.Fluent.Models.Encryption.KeySource == null) {
-                return null;
-            }
-            return StorageAccountEncryptionKeySource.Parse(Microsoft.Azure.Management.Storage.Fluent.Models.Encryption.KeySource);
+            return StorageEncryptionHelper.EncryptionKeySource(this.Inner);
         }
 
-        ///GENMHASH:26FB96D5CAED2DAC6A25B7684BA6EA62:EA8D98221847758B674F32A5F6BA8D4E
+        ///GENMHASH:26FB96D5CAED2DAC6A25B7684BA6EA62:299BE7E5A8CF6BA9E16D49D77E08F875
         public IReadOnlyDictionary<StorageService, IStorageAccountEncryptionStatus> EncryptionStatuses()
         {
-            var statuses = new Dictionary<StorageService, IStorageAccountEncryptionStatus>();
-            if (this.Inner.Encryption != null && this.Inner.Encryption.Services != null)
-            {
-                // Status of blob service
-                //
-                // Status for other service needs to be added as storage starts supporting it
-                statuses.Add(StorageService.Blob, new BlobServiceEncryptionStatusImpl(this.Inner.Encryption.Services));
-            }
-            else
-            {
-                statuses.Add(StorageService.Blob, new BlobServiceEncryptionStatusImpl(new EncryptionServices()));
-            }
-            return statuses;
+            return StorageEncryptionHelper.EncryptionStatuses(this.Inner);
         }
 
         ///GENMHASH:F740873A801629829EA1C3C98F4FDDC4:ACAFFE3955CCFBD0C2BC6D268AECA2BA
@@ -177,8 +162,13 @@ namespace Microsoft.Azure.Management.Storage.Fluent
             return this.Manager.Inner.StorageAccounts.GetPropertiesAsync(this.ResourceGroupName, this.Name, cancellationToken);
         }
 
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<CHANGED>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            //$ public StorageAccountImpl withSku(SkuName skuName) {
+            //$ return withSku(StorageAccountSkuType.FromSkuName(skuName));
 
-        ///GENMHASH:B5E3D903BDA1F2A62441339A3042D8F4:ACEB925626760D001C056B5F56BA838D
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+        ///GENMHASH:B5E3D903BDA1F2A62441339A3042D8F4:39725B0498CCC3701985F13AE17C0DB9
         public StorageAccountImpl WithSku(SkuName skuName)
         {
             if (IsInCreateMode)
@@ -215,21 +205,13 @@ namespace Microsoft.Azure.Management.Storage.Fluent
         }
 
 
-        ///GENMHASH:E682EADDA53D09A6C953C211B424E76E:899F60366D3E50D4BBC789B5F2D80AA6
-        public StorageAccountImpl WithEncryption(Encryption encryption)
-        {
-            if (IsInCreateMode)
-            {
-                createParameters.Encryption = encryption;
-            }
-            else
-            {
-                updateParameters.Encryption = encryption;
-            }
-            return this;
-        }
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<CHANGED>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            //$ public StorageAccountImpl withEncryption() {
+            //$ return withBlobEncryption();
 
-        ///GENMHASH:56847EFF91F827802715E0B549682639:0E687FFBFFC0F8425CBCFEB059830CD5
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+        ///GENMHASH:56847EFF91F827802715E0B549682639:A52F88293839228BBEBEEC9EB4D0DB68
         public StorageAccountImpl WithEncryption()
         {
             Encryption encryption;
@@ -271,7 +253,13 @@ namespace Microsoft.Azure.Management.Storage.Fluent
         }
 
 
-        ///GENMHASH:7A1BAFE758BD50E4AF6B50ADFDAD2EF5:360F4E1935623C8F70405940705BA359
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<CHANGED>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            //$ public StorageAccountImpl withoutEncryption() {
+            //$ return withoutBlobEncryption();
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+        ///GENMHASH:7A1BAFE758BD50E4AF6B50ADFDAD2EF5:F90635EB7EEC5820E29B2722F77122F8
         public StorageAccountImpl WithoutEncryption()
         {
             if (this.Inner.Encryption == null
@@ -293,9 +281,18 @@ namespace Microsoft.Azure.Management.Storage.Fluent
             return this;
         }
 
-        ///GENMHASH:6BCE517E09457FF033728269C8936E64:D26CBA1CFC05445E2A90F41690FC5CB3
+        ///GENMHASH:6BCE517E09457FF033728269C8936E64:789C9582170BCB5E4150FE4603AF40D4
         public override IUpdate Update()
         {
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<CHANGED>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            //$ createParameters = null;
+            //$ updateParameters = new StorageAccountUpdateParametersInner();
+            //$ this.networkRulesHelper = new StorageNetworkRulesHelper(this.updateParameters, this.Inner);
+            //$ this.encryptionHelper = new StorageEncryptionHelper(this.updateParameters, this.Inner);
+            //$ return super.Update();
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
             updateParameters = new StorageAccountUpdateParametersInner();
             return this;
         }
@@ -345,18 +342,56 @@ namespace Microsoft.Azure.Management.Storage.Fluent
             return this;
         }
 
-        ///GENMHASH:507A92D4DCD93CE9595A78198DEBDFCF:173D84E645D15368413A8D483FE286BF
+        ///GENMHASH:507A92D4DCD93CE9595A78198DEBDFCF:F8796591A930D091E7B7BB504EDF104C
         private async Task<Microsoft.Azure.Management.Storage.Fluent.IStorageAccount> UpdateResourceAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<CHANGED>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            //$ this.networkRulesHelper.SetDefaultActionIfRequired();
+            //$ updateParameters.WithTags(this.Inner.GetTags());
+            //$ return this.Manager().Inner.StorageAccounts().UpdateAsync(
+            //$ resourceGroupName(), name(), updateParameters)
+            //$ .Map(innerToFluentMap(this))
+            //$ .DoOnNext(new Action1<StorageAccount>() {
+            //$ @Override
+            //$ public void call(StorageAccount storageAccount) {
+            //$ clearWrapperProperties();
+            //$ }
+            //$ });
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
             updateParameters.Tags = this.Inner.Tags;
             var response = await Manager.Inner.StorageAccounts.UpdateAsync(this.ResourceGroupName, this.Name, updateParameters, cancellationToken);
             SetInner(response);
             return this;
         }
 
-        ///GENMHASH:0202A00A1DCF248D2647DBDBEF2CA865:8F7656658E1EF4B6E2C2F36AD013828C
+        ///GENMHASH:0202A00A1DCF248D2647DBDBEF2CA865:396945BF91DBD726EDD39E5061E66D9B
         public async override Task<Microsoft.Azure.Management.Storage.Fluent.IStorageAccount> CreateResourceAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<CHANGED>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            //$ this.networkRulesHelper.SetDefaultActionIfRequired();
+            //$ createParameters.WithLocation(this.RegionName());
+            //$ createParameters.WithTags(this.Inner.GetTags());
+            //$ StorageAccountsInner client = this.Manager().Inner.StorageAccounts();
+            //$ return this.Manager().Inner.StorageAccounts().CreateAsync(
+            //$ this.ResourceGroupName(), this.Name(), createParameters)
+            //$ .FlatMap(new Func1<StorageAccountInner, Observable<StorageAccountInner>>() {
+            //$ @Override
+            //$ public Observable<StorageAccountInner> call(StorageAccountInner storageAccountInner) {
+            //$ return client.GetByResourceGroupAsync(resourceGroupName(), name());
+            //$ }
+            //$ })
+            //$ .Map(innerToFluentMap(this))
+            //$ .DoOnNext(new Action1<StorageAccount>() {
+            //$ @Override
+            //$ public void call(StorageAccount storageAccount) {
+            //$ clearWrapperProperties();
+            //$ }
+            //$ });
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
             if (IsInCreateMode)
             {
                 createParameters.Location = this.RegionName;
@@ -373,5 +408,385 @@ namespace Microsoft.Azure.Management.Storage.Fluent
             SetInner(response);
             return this;
         }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:C2F133AE0FC89EEF547B4FFB5C0D4A9A:D697721F4651F53E38F6D4FCD3641956
+        public IReadOnlyList<string> IPAddressesWithAccess()
+        {
+            //$ return StorageNetworkRulesHelper.IpAddressesWithAccess(this.Inner);
+
+            return null;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:F75CDC99E2E9A344C379CC08F9D4ACBA:1B57F0CF078BDC2FBB69009DCAA738BF
+        public StorageAccountImpl WithoutIpAddressAccess(string ipAddress)
+        {
+            //$ this.networkRulesHelper.WithoutIpAddressAccess(ipAddress);
+            //$ return this;
+
+            return this;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:847E4E638739C7FA6EB5C3D39F01D033:439CF90D7EC28B697ACF448240AB7FEE
+        public StorageAccountImpl WithoutIpAddressRangeAccess(string ipAddressCidr)
+        {
+            //$ this.networkRulesHelper.WithoutIpAddressRangeAccess(ipAddressCidr);
+            //$ return this;
+
+            return this;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:47814D91B7A8A8F74570591144A25ED7:537F70D4211A4C0BAA4DA9384F300CE7
+        public StorageAccountImpl WithoutFileEncryption()
+        {
+            //$ this.encryptionHelper.WithoutFileEncryption();
+            //$ return this;
+
+            return this;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:67CB6A707CF4CE9C04EDC62F0AB0957B:EC6C10E7AC6EAA96BE30D799405C561D
+        public IUpdate WithoutReadAccessToLoggingFromAnyNetwork()
+        {
+            //$ this.networkRulesHelper.WithoutReadAccessToLoggingFromAnyNetwork();
+            //$ return this;
+
+            return null;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:9EF4A08D221595621FDCAFD7FD09AFE2:A9B0A04022BFC4614AF74D0C3B8D24B3
+        public StorageAccountSkuType SkuType()
+        {
+            //$ // We deprecated the sku() getter. When we remove it we wanted to rename this
+            //$ // 'beta' getter skuType() to sku().
+            //$ //
+            //$ return StorageAccountSkuType.FromSkuName(this.Inner.Sku().Name());
+
+            return null;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:18BC5BF9B6EE1BC9B55B8D4EBCB3B56D:071B91D6CC3A043AF5B0A52BEB68A01C
+        public StorageAccountImpl WithReadAccessToMetricsFromAnyNetwork()
+        {
+            //$ this.networkRulesHelper.WithReadAccessToMetricsFromAnyNetwork();
+            //$ return this;
+
+            return this;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:8F0CB7D0D160167569B264A540A0BB4A:E9F85A46428F9258D9FA551AC383C59E
+        public StorageAccountImpl WithFileEncryption()
+        {
+            //$ this.encryptionHelper.WithFileEncryption();
+            //$ return this;
+
+            return this;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:675D6BA74B1BD5A9B8A67B69014F3D7F:77135B4BAB586DE5D2DF55334DB979F4
+        public IUpdate WithoutReadAccessToMetricsFromAnyNetwork()
+        {
+            //$ this.networkRulesHelper.WithoutReadAccessToMetricsFromAnyNetwork();
+            //$ return this;
+
+            return null;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:1DE818A27E19C3570203A965AF1E4473:9CF481E89FC6E9693DDA32E2E66E4780
+        public StorageAccountImpl WithReadAccessToLogEntriesFromAnyNetwork()
+        {
+            //$ this.networkRulesHelper.WithReadAccessToLoggingFromAnyNetwork();
+            //$ return this;
+
+            return this;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:0FB19BD71D35E8BAC2D116947E61A25B:F39C5F9C924B9F87BEBDD6863846F295
+        public IUpdate WithoutAccessFromAzureServices()
+        {
+            //$ this.networkRulesHelper.WithoutAccessFromAzureServices();
+            //$ return this;
+
+            return null;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:0A1DFCA64C9498252BE32BC3BFBE9F4A:4A8B2CAAD11BAA8DA32A64FBF8D1F05C
+        public StorageAccountImpl WithAccessFromIpAddressRange(string ipAddressCidr)
+        {
+            //$ this.networkRulesHelper.WithAccessFromIpAddressRange(ipAddressCidr);
+            //$ return this;
+
+            return this;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:7DB2D011B5CDF195415C6720ACC92AE5:482E38947F67648FBA023601C94F4B47
+        public StorageAccountImpl WithAccessFromIpAddress(string ipAddress)
+        {
+            //$ this.networkRulesHelper.WithAccessFromIpAddress(ipAddress);
+            //$ return this;
+
+            return this;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:55BB1382A3EA3FEBBDF95215151F8990:EC2A3550C3FC9D5A9AA0BCF7A70A3716
+        public StorageAccountImpl WithOnlyHttpsTraffic()
+        {
+            //$ if (isInCreateMode()) {
+            //$ createParameters.WithEnableHttpsTrafficOnly(true);
+            //$ } else {
+            //$ updateParameters.WithEnableHttpsTrafficOnly(true);
+            //$ }
+            //$ return this;
+
+            return this;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:B9EE029C143C1C09C5669B4A3FBECE62:2C9D16335ED25FB93661206B20DBFA41
+        public StorageAccountImpl WithAccessFromAllNetworks()
+        {
+            //$ this.networkRulesHelper.WithAccessFromAllNetworks();
+            //$ return this;
+
+            return this;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:28F05A97A27982A7F92482B99325EBF3:AE1D120BA1CBBD85816F0BBF8499E8E2
+        public string SystemAssignedManagedServiceIdentityTenantId()
+        {
+            //$ if (this.Inner.Identity() == null) {
+            //$ return null;
+            //$ } else {
+            //$ return this.Inner.Identity().TenantId();
+            //$ }
+
+            return null;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:7F723CF72B72C34A91B63032AF06AECB:4ABE8556FCA26F394CBB1062DEF08544
+        public StorageAccountImpl WithSystemAssignedManagedServiceIdentity()
+        {
+            //$ if (this.Inner.Identity() == null) {
+            //$ if (isInCreateMode()) {
+            //$ createParameters.WithIdentity(new Identity().WithType("SystemAssigned"));
+            //$ } else {
+            //$ updateParameters.WithIdentity(new Identity().WithType("SystemAssigned"));
+            //$ }
+            //$ }
+            //$ return this;
+
+            return this;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:39F9317665E14B578822CE3749ACE22A:CFEA11B8E97856C5DD3E4913EBE449A4
+        public bool CanReadLogEntriesFromAnyNetwork()
+        {
+            //$ return StorageNetworkRulesHelper.CanReadLogEntriesFromAnyNetwork(this.Inner);
+
+            return false;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:EDC6F988FEE2B3931AAAFB28D1C233D0:22984BE7239A6ED410C1A3096E7F5921
+        public StorageAccountImpl WithHttpAndHttpsTraffic()
+        {
+            //$ updateParameters.WithEnableHttpsTrafficOnly(false);
+            //$ return this;
+
+            return this;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:66DAA29A825C045119A8F4AFEB963F9C:770F37FD74925A1180EE8B6AC2112150
+        public StorageAccountImpl WithSku(StorageAccountSkuType sku)
+        {
+            //$ if (isInCreateMode()) {
+            //$ createParameters.WithSku(new SkuInner().WithName(sku.Name()));
+            //$ } else {
+            //$ updateParameters.WithSku(new SkuInner().WithName(sku.Name()));
+            //$ }
+            //$ return this;
+
+            return this;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:87673CC4832F4C7743B7F31A22932B78:006EEBF5C60FFF48087E596AA5009028
+        public string SystemAssignedManagedServiceIdentityPrincipalId()
+        {
+            //$ if (this.Inner.Identity() == null) {
+            //$ return null;
+            //$ } else {
+            //$ return this.Inner.Identity().PrincipalId();
+            //$ }
+
+            return null;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:C14D790B4D1B66AF7349EAFCBBEA1C91:022FBB38D6CF761960BA9A37C304D284
+        public StorageAccountImpl WithAccessFromAzureServices()
+        {
+            //$ this.networkRulesHelper.WithAccessAllowedFromAzureServices();
+            //$ return this;
+
+            return this;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:0F1094C94F6F0E279562A3D1A380FE42:4CA0CE1947BBD9EDA4A2FDAC76E23057
+        public bool IsAccessAllowedFromAllNetworks()
+        {
+            //$ return StorageNetworkRulesHelper.IsAccessAllowedFromAllNetworks(this.Inner);
+
+            return false;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:2E99EAA1E93628587B3D73AC7F3EEBC0:153D5C9B12BD32B7BD50116F7562C137
+        public StorageAccountImpl WithoutNetworkSubnetAccess(string subnetId)
+        {
+            //$ this.networkRulesHelper.WithoutNetworkSubnetAccess(subnetId);
+            //$ return this;
+
+            return this;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:4C85CA9C782D47082FD338D5941F42D7:7FA15A669B08B4C8C6C0B8AB021CA488
+        public IReadOnlyList<string> IPAddressRangesWithAccess()
+        {
+            //$ return StorageNetworkRulesHelper.IpAddressRangesWithAccess(this.Inner);
+
+            return null;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:49CBC3AEB9561B9FB0DC7A1948E99A1E:00E82B7EFF5F157EE219904861FE2344
+        public StorageAccountImpl WithEncryptionKeyFromKeyVault(string keyVaultUri, string keyName, string keyVersion)
+        {
+            //$ this.encryptionHelper.WithEncryptionKeyFromKeyVault(keyVaultUri, keyName, keyVersion);
+            //$ return this;
+
+            return this;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:5D8E21CABBF7FA1B05E1DE0F97141AE5:F784E29F8F04582462AB57328371214C
+        public IReadOnlyList<string> NetworkSubnetsWithAccess()
+        {
+            //$ return StorageNetworkRulesHelper.NetworkSubnetsWithAccess(this.Inner);
+
+            return null;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:F792F6C8C594AA68FA7A0FCA92F55B55:5961A2D0C2007F645841A48147A553E6
+        public Sku Sku()
+        {
+            //$ public Sku sku() {
+            //$ return new Sku().WithName(this.Inner.Sku().Name());
+
+            return null;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:030DDE9E1AA399E4B7C25223B1F99C60:A0B4F30C967C27CD76D06C595A744C61
+        public bool CanReadMetricsFromAnyNetwork()
+        {
+            //$ return StorageNetworkRulesHelper.CanReadMetricsFromAnyNetwork(this.Inner);
+
+            return false;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:3872F883CE34060251486AD613265A9D:7B252648094C237C0CA4453C8160BA08
+        public bool CanAccessFromAzureServices()
+        {
+            //$ return StorageNetworkRulesHelper.CanAccessFromAzureServices(this.Inner);
+
+            return false;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:A27EB73264D76B7A45B1F3A10FBC3C71:0AE67E88364675BC0080FB2F1D73B90B
+        public StorageAccountImpl WithAccessFromNetworkSubnet(string subnetId)
+        {
+            //$ this.networkRulesHelper.WithAccessFromNetworkSubnet(subnetId);
+            //$ return this;
+
+            return this;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:01ACF44C50C59F86A43DC2A9B3977F04:322E944F4F0257EED0811C662A4BB65E
+        public StorageAccountImpl WithBlobEncryption()
+        {
+            //$ this.encryptionHelper.WithBlobEncryption();
+            //$ return this;
+
+            return this;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:E91671491194D4DE7AC3C8A56BE01F87:6D6C0D46C27765D3AFDB60319534D072
+        public StorageAccountImpl WithAccessFromSelectedNetworks()
+        {
+            //$ this.networkRulesHelper.WithAccessFromSelectedNetworks();
+            //$ return this;
+
+            return this;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:A4FFE5B248CECEBCF1538195316501A2:CCC3BA394841F19A499657C5B54F4608
+        public StorageAccountImpl WithoutBlobEncryption()
+        {
+            //$ this.encryptionHelper.WithoutBlobEncryption();
+            //$ return this;
+
+            return this;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:0782D0F11E3B424FF95354F9773F8768:4EB94A70A7472288B3D1E6FA290874EE
+        public StorageAccountImpl WithGeneralPurposeAccountKindV2()
+        {
+            //$ createParameters.WithKind(Kind.STORAGE_V2);
+            //$ return this;
+
+            return this;
+        }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<NEW>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ///GENMHASH:CDB3E13DA37D921A3A180E0C12DBD1A0:3111BF65AF09AE677B63EBC80DF81917
+        private void ClearWrapperProperties()
+        {
+            //$ accountStatuses = null;
+            //$ publicEndpoints = null;
+            //$ }
+
+        }
+
     }
 }

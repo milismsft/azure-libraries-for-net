@@ -25,5 +25,10 @@ namespace Microsoft.Azure.Management.Storage.Fluent
         /// Static value Queue for StorageService.
         /// </summary>
         public static readonly StorageService Queue = Parse("Queue");
+
+        /// <summary>
+        /// Static value File for StorageService.
+        /// </summary>
+        public static readonly StorageService File = Parse("File");
     }
 }
